@@ -1,79 +1,57 @@
-import React, {Component} from "react"
+import React, { useState } from 'react'
+import HandsonThreeData from './FormData'
 
-class Form extends Component{
-    constructor(){
-        super();
-        this.state = {
-            name : '',
-            department : '',
-            rating : "" ,
-            stuData : []
+const HandsonThreeMain = () => {
+
+  const[name,setName] = useState('')
+  const[department,setDepartment] = useState('')
+  const[rating,setRating] = useState('')
+  const[data,setData] = useState([])
+  const[click,setClick] = useState(true)
+
+
+  const handleChange=(e)=>{
+    const { name, value } = e.target;
+        // Update the correct state based on the input field name
+        if (name === 'name') {
+          setName(value);
+        } else if (name === 'department') {
+          setDepartment(value);
+        } else if (name === 'rating') {
+          setRating(value);
         }
+  }
+
+  const handleCLick=()=>{
+    const obj={
+      name : name,
+      department : department,
+      rating : rating
     }
 
-    handleChange = (e)=>{
-        this.setState({[e.target.name] : e.target.value}) 
-        // console.log(e.target.value.length);
-    }
+    const value = [...data,obj]
+    setData(value)
+    setClick(false)
+  }
 
-    handleSubmit = (e) =>{
-        e.preventDefault()
+  const togleFunction=()=>{
+    setClick(!click)
+  }
 
-        const tempObj = {
-            name : this.state.name,
-            department : this.state.department,
-            rating : this.state.rating
-        }
-
-
-        this.state.stuData.push(tempObj)
-        this.setState({
-            stuData : this.state.stuData
-        })
-
-        // this part will make the form blank after submit
-        this.setState({
-            stuData : this.state.stuData ,
-            name : "",
-            department : "" ,
-            rating : ""
-        })
-
-        console.log(this.state.stuData);
-    }
-
-    render(){
-        return(
-            <>
-            <form>
-            <h1>EMPLOYEE FEEDBACK FORM</h1>
-            <label htmlFor="name">Name : </label>
-            <input type="text" id="name" name="name" value={this.state.name} onChange={this.handleChange} autoComplete="off" required /><br/>
-            <label htmlFor="dept">Department : </label>
-            <input type="text" id="dept" name="department" value={this.state.department} onChange={this.handleChange} autoComplete="off" /><br/>
-            <label htmlFor="rating">Rating : </label>
-            <input type="number" id="rating" name="rating" value={this.state.rating} onChange={this.handleChange} autoComplete="off" /><br/>
-            <button onClick={this.handleSubmit}>Submit</button>
-            </form>
-
-
-            <div>
-            {this.state.stuData.map((item,index)=>{
-                console.log(item);
-                return(
-                    <div key = {index}>
-                        {/* <p>index: {index}</p> */}
-                        <h1>{item.name}</h1>
-                        <h1>{item.department}</h1>
-                        <h1>{item.rating}</h1>
-                    </div>
-                )
-            })}
-            </div>
-            </>
-        )
-    }
-
+  return (
+    <div>
+      {click?(
+        <>
+        <h1>EMPLOYEE FEEDBACK FORM</h1>
+      <div><span className="boldtext">Name : </span><input className="input" name='name' onChange={handleChange}/></div>
+      <div><span className="boldtext"> Department : </span><input className="input" name='department' onChange={handleChange}/></div>
+      <div><span className="boldtext">Rating : </span><input className="input" name='rating' onChange={handleChange}/></div>
+      <button onClick={handleCLick}>Submit</button>
+        </>) : ( 
+        <HandsonThreeData value = {data} toggle = {togleFunction}/>
+        )}
+    </div>
+  )
 }
 
-export default Form
+export default HandsonThreeMain

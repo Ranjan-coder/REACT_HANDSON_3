@@ -1,10 +1,10 @@
 import React from "react"
-import Form from "./Form"
+import HandsonThreeMain from "./Form"
 
 function FormDisplay(){
     return(
         <>
-        <Form/>
+        <HandsonThreeMain/>
         </>
     )
 }
